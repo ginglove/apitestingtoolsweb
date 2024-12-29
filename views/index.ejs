@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Testing Modern</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">API Testing</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/information">Information</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contacts">Contacts</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <h1 class="text-center mb-4">API Testing Modern</h1>
+
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="nav flex-column nav-pills" id="menu-tabs">
+                    <li class="nav-item">
+                        <button class="nav-link active" id="api-demo-tab" data-bs-toggle="pill"
+                            data-bs-target="#api-demo">API Testing Demo</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="jwt-decode-tab" data-bs-toggle="pill"
+                            data-bs-target="#jwt-decode">JWT Decode</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="basic-decode-tab" data-bs-toggle="pill"
+                            data-bs-target="#basic-decode">Basic Token Decode</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="json-validate-tab" data-bs-toggle="pill"
+                            data-bs-target="#json-validate">JSON Validate</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <div class="tab-content">
+                    <!-- API Testing Demo -->
+                    <div class="tab-pane fade show active" id="api-demo">
+                        <h3>API Testing Demo</h3>
+                        <form action="/api-test" method="post">
+                            <div class="mb-3">
+                                <label for="url" class="form-label">API URL</label>
+                                <input type="text" class="form-control" name="url" id="url" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="method" class="form-label">HTTP Method</label>
+                                <select class="form-control" name="method" id="method">
+                                    <option>GET</option>
+                                    <option>POST</option>
+                                    <option>PUT</option>
+                                    <option>DELETE</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="payload" class="form-label">Payload (JSON)</label>
+                                <textarea class="form-control" name="payload" id="payload" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Request</button>
+                        </form>
+                    </div>
+
+                    <!-- JWT Decode -->
+                    <div class="tab-pane fade" id="jwt-decode">
+                        <h3 class="text-center">JWT Decode</h3>
+
+                        <div class="row mt-4">
+                            <!-- Input Panel -->
+                            <div class="col-md-6">
+                                <form id="jwtDecodeForm" action="/decode-jwt" method="post">
+                                    <div class="mb-3">
+                                        <label for="jwt-token" class="form-label">JWT Token</label>
+                                        <textarea class="form-control" name="token" id="jwt-token" rows="6"
+                                            placeholder="Paste your JWT token here" required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="algorithm" class="form-label">Algorithm</label>
+                                        <select class="form-control" name="algorithm" id="algorithm">
+                                            <option value="HS256">HS256</option>
+                                            <option value="RS256">RS256</option>
+                                            <option value="ES256">ES256</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">Decode</button>
+                                </form>
+                            </div>
+
+                            <!-- Output Panel -->
+                            <div class="col-md-6">
+                                <h5>Decoded Token</h5>
+                                <pre id="decodedResult" class="bg-light p-3" style="height: 200px; overflow-y: auto;">
+          <%= result || 'Decoded content will appear here.' %>
+        </pre>
+
+                                <!-- Error Message -->
+                                <% if (error_msg) { %>
+                                    <div class="alert alert-danger mt-3">
+                                        <%= error_msg %>
+                                    </div>
+                                    <% } %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Basic Token Decode -->
+                    <div class="tab-pane fade" id="basic-decode">
+                        <h3>Basic Token Decode</h3>
+                        <form action="/decode-basic" method="post">
+                            <div class="mb-3">
+                                <label for="basic-token" class="form-label">Basic Token</label>
+                                <input type="text" class="form-control" name="token" id="basic-token">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Decode</button>
+                        </form>
+                    </div>
+
+                    <!-- JSON Validate -->
+                    <div class="tab-pane fade" id="json-validate">
+                        <h3>JSON Validate</h3>
+                        <form action="/validate-json" method="post">
+                            <div class="mb-3">
+                                <label for="json-input" class="form-label">JSON Input</label>
+                                <textarea class="form-control" name="json" id="json-input" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Validate</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <h3>Result:</h3>
+            <pre class="bg-light p-3"><%= result || 'No results yet.' %></pre>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-5">
+        <p>&copy; 2024 API Testing Website | <a href="/information">Information</a> | <a href="/contacts">Contacts</a>
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
