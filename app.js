@@ -33,7 +33,17 @@ app.set('view engine', 'ejs');
 
 // Routes
 app.get('/', (req, res) => {
-  res.render('index', { result: null });
+  res.render('index', {
+    header: '', // Decoded header
+    payload: '', // Decoded payload
+    signature: '' || 'No signature', // Signature part
+    error_msg: '', // No error
+    token: '', // Retain token
+    algorithm: 'HS256', // Retain algorithm
+    activeTab: 'api-test',  // Default active tab,
+    validateJsonResult: '',
+    basicTokenResult: ''
+  });
 });
 
 // Information Page Route
@@ -55,60 +65,158 @@ app.post('/api-test', async (req, res) => {
       url,
       data: payload ? JSON.parse(payload) : undefined,
     });
-    res.render('index', { result: JSON.stringify(response.data, null, 2) });
+    res.render('index', 
+      { 
+        apiTestResult: JSON.stringify(response.data, null, 2),
+        validateJsonResult:'',
+        basicTokenResult:'',
+        token:'',
+        algorithm:'',
+        header:'',
+        payload:'',
+        signature:'',
+        activeTab: 'api-test' // Stay on JWT Decode tab 
+      });
   } catch (error) {
-    res.render('index', { result: `Error: ${error.message}` });
+    res.render('index', 
+      { 
+        apiTestResult: `Error: ${error.message}`,
+        validateJsonResult:'',
+        basicTokenResult:'',
+        token:'',
+        header:'',
+        algorithm:'',
+        payload:'',
+        signature:'',
+        activeTab: 'api-test' // Stay on JWT Decode tab 
+      });
   }
 });
 
 app.post('/decode-jwt', (req, res) => {
   const { token, algorithm } = req.body;
-
+  let header = '';
+  let payload = '';
+  let signature = '';
   try {
-      // Decode JWT using the provided algorithm
-      const decoded = jwt.verify(token, "your-secret-key", { algorithms: [algorithm] });
+      const decodedToken = jwt.decode(token, { complete: true });
 
-      // Render the page with decoded content
+      // Decode the JWT header for debugging
+      if (decodedToken) {
+        header = JSON.stringify(decodedToken.header, null, 2);
+        payload = JSON.stringify(decodedToken.payload, null, 2);
+        signature = token.split('.')[2] || 'No signature available';
+    } else {
+        throw new Error('Invalid JWT token.');
+    }
+
+    if (decodedToken?.header?.alg !== algorithm) {
+      throw new Error(`ALGORITHM MISMATCH! ALGORITHM of your Token is: ${decodedToken.header.alg}, Your Selected ALGORITHM is: ${algorithm}`);
+    }
+
+      // Verify the token
+      jwt.decode(token, { complete: true });
+
+      // Render the result
       res.render('index', {
-          result: JSON.stringify(decoded, null, 2), // Decoded JWT content
-          error_msg: '',                           // No error
-          token: token || '',                      // Original token value
-          algorithm: algorithm || 'HS256'         // Selected algorithm
+        header: header, // Decoded header
+        payload: payload, // Decoded payload
+        signature: signature || 'No signature', // Signature part
+        error_msg: '', // No error
+        token: token || '', // Retain token
+        algorithm: algorithm || 'HS256', // Retain algorithm
+        validateJsonResult:'',
+        basicTokenResult:'',
+        activeTab: 'jwt-decode' // Stay on JWT Decode tab
       });
   } catch (error) {
-      // Render the page with the error message and original inputs
+      // Handle errors gracefully
       res.render('index', {
-          result: '',                              // Clear result
-          error_msg: `Error decoding JWT: ${error.message}`, // Error message
-          token: token || '',                      // Original token value
-          algorithm: algorithm || 'HS256'         // Selected algorithm
+        header: '', // Clear header
+        payload: '', // Clear payload
+        signature: '', // Clear signature
+        error_msg: `Error decoding JWT: ${error.message}`, // Error message
+        token: token || '', // Retain token
+        algorithm: algorithm || 'HS256', // Retain algorithm
+        validateJsonResult:'',
+        basicTokenResult:'',
+        activeTab: 'jwt-decode' // Stay on JWT Decode tab
       });
   }
 });
 // Basic Token Decode
 app.post('/decode-basic', (req, res) => {
   const { token } = req.body;
+  let decodeStatus = 'danger';
   try {
     const decoded = Buffer.from(token, 'base64').toString('utf8');
-    res.render('index', { result: decoded });
+    decodeStatus = 'success';
+    res.render('index', 
+      { 
+        basicTokenResult: decoded, 
+        token:'',
+        algorithm:'',
+        header:'',
+        payload:'',
+        signature:'',
+        decodeStatus,
+        validateJsonResult:'',
+        activeTab: 'basic-decode'
+      });
   } catch (error) {
-    res.render('index', { result: 'Invalid Basic Token!' });
+    decodeStatus = 'danger';
+    res.render('index', { 
+      basicTokenResult: 'Invalid Basic Token!',
+      token:'',
+      algorithm:'',
+      header:'',
+      payload:'',
+      signature:'',
+      decodeStatus,
+      validateJsonResult:'',
+      activeTab: 'basic-decode' 
+    });
   }
 });
 
 // JSON Validation
 app.post('/validate-json', (req, res) => {
   const { json } = req.body;
+  let validationStatus = 'danger'; // Default to invalid
   try {
     const parsed = JSON.parse(json);
-    res.render('index', { result: 'Valid JSON: ' + JSON.stringify(parsed, null, 2) });
+    validationStatus = 'success'; // Valid JSON
+    res.render('index', 
+      { 
+        validateJsonResult: JSON.stringify(parsed, null, 2),
+        token:'',
+        algorithm:'',
+        header:'',
+        payload:'',
+        signature:'',
+        validationStatus,
+        basicTokenResult:'',
+        activeTab: 'json-validate'
+      });
   } catch (error) {
-    res.render('index', { result: 'Invalid JSON!' });
+    validationStatus = 'danger'; // Invalid JSON
+    res.render('index', 
+      { 
+        validateJsonResult: 'Invalid JSON!',
+        token: '',
+        algorithm:'',
+        header:'',
+        payload:'',
+        signature:'',
+        validationStatus,
+        basicTokenResult:'',
+        activeTab: 'json-validate'
+      });
   }
 });
 
 // Start the server
-const PORT = 3333;
+const PORT = 4455;
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
