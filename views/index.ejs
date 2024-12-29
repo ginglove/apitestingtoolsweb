@@ -36,8 +36,9 @@
         <h1 class="text-center mb-4">API Testing Modern</h1>
 
         <div class="row">
+            <!-- Left Column (Tabs) -->
             <div class="col-md-3">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs flex-column">
                     <li class="nav-item">
                         <a class="nav-link <%= activeTab === 'api-test' ? 'active' : '' %>" href="#api-test"
                             data-bs-toggle="tab">API Testing Demo</a>
@@ -56,139 +57,207 @@
                     </li>
                 </ul>
             </div>
+            <!-- Right Column (Tab Content) -->
             <div class="col-md-9">
                 <div class="tab-content">
-                    <!-- API Testing Demo -->
+                    <!-- API Testing Demo Tab -->
                     <div class="tab-pane fade <%= activeTab === 'api-test' ? 'show active' : '' %>" id="api-test">
-                        <h3>API Testing Demo</h3>
-                        <form action="/api-test" method="post">
-                            <div class="mb-3">
-                                <label for="url" class="form-label">API URL</label>
-                                <input type="text" class="form-control" name="url" id="url" required>
+                        <h2>API Testing Demo</h2>
+                        <div class="row">
+                            <!-- API List Column -->
+                            <div class="col-md-4 border-end">
+                                <h4>API List</h4>
+                                <ul class="list-group" id="api-list">
+                                    <li class="list-group-item">
+                                        <button class="btn btn-link w-100 text-start"
+                                            onclick="loadApiDetails('GET', '/api/users', null)">
+                                            <strong>GET</strong> /api/users
+                                        </button>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <button class="btn btn-link w-100 text-start"
+                                            onclick="loadApiDetails('GET', '/api/users/677161c51c2964487294ec08', null)">
+                                            <strong>GET</strong> /api/users/:id
+                                        </button>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <button class="btn btn-link w-100 text-start"
+                                            onclick="loadApiDetails('POST', '/api/users', { name: 'John Doe3', email: 'john3@example.com',age:30 })">
+                                            <strong>POST</strong> /api/users
+                                        </button>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <button class="btn btn-link w-100 text-start"
+                                            onclick="loadApiDetails('PUT', '/api/users/677161c51c2964487294ec08', { name: 'John Doe5', email: 'john5@example.com',age:30 })">
+                                            <strong>PUT</strong> /api/users/:id
+                                        </button>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <button class="btn btn-link w-100 text-start"
+                                            onclick="loadApiDetails('DELETE', '/api/users/:id', null)">
+                                            <strong>DELETE</strong> /api/users/:id
+                                        </button>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="mb-3">
-                                <label for="method" class="form-label">HTTP Method</label>
-                                <select class="form-control" name="method" id="method">
-                                    <option>GET</option>
-                                    <option>POST</option>
-                                    <option>PUT</option>
-                                    <option>DELETE</option>
-                                </select>
+                            <!-- Request Example Column -->
+                            <div class="col-md-4 border-end">
+                                <h4>Request Example</h4>
+                                <form id="api-form" method="POST" action="/api-test">
+                                    <input type="hidden" name="method" id="method">
+                                    <input type="hidden" name="endpoint" id="endpoint">
+                                    <!-- Request URL -->
+                                    <div class="mb-3">
+                                        <label for="url" class="form-label">Full URL</label>
+                                        <input type="text" id="url" name="url" class="form-control" readonly>
+                                    </div>
+                                    <!-- Request Method -->
+                                    <div class="mb-3">
+                                        <label for="request-method" class="form-label">Method</label>
+                                        <input type="text" id="request-method" class="form-control" readonly>
+                                    </div>
+                                    <!-- Example JSON Payload -->
+                                    <div class="mb-3" id="payload-container" style="display: none;">
+                                        <label for="payload" class="form-label">Example JSON Payload</label>
+                                        <textarea id="payload" name="payload" class="form-control" rows="5"
+                                            readonly></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Send Request</button>
+                                </form>
                             </div>
-                            <div class="mb-3">
-                                <label for="payload" class="form-label">Payload (JSON)</label>
-                                <textarea class="form-control" rows="6" readonly><%= apiTestResult || 'Result will appear here.' %></textarea>
-
+                            <!-- Response Column -->
+                            <div class="col-md-4">
+                                <h4>Response</h4>
+                                <div id="response-container" class="bg-light p-3 border rounded"
+                                    style="min-height: 200px;">
+                                    <% if (apiTestResult) { %>
+                                        <pre><%= apiTestResult %></pre>
+                                        <% } else { %>
+                                            <pre><%= errorMessage %></pre>
+                                            <% } %>
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Send Request</button>
-                        </form>
+                        </div>
                     </div>
 
                     <!-- JWT Decode -->
                     <div class="tab-pane fade <%= activeTab === 'jwt-decode' ? 'show active' : '' %>" id="jwt-decode">
                         <div class="container">
                             <!-- Title Section -->
-                            <h2 class="mt-4">JWT Decode</h2>
-                          
+                            <h2 class="mt-4 text-center">JWT Decode</h2>
+
                             <!-- Decode JWT Section (Header, Payload, Signature) in the same row -->
                             <div class="row mt-4">
-                              <!-- JWT Token Input Section -->
-                              <div class="col-md-6">
-                                <form action="/decode-jwt" method="POST">
-                                  <div class="mb-3">
-                                    <h6 class="mt-3">JWT TOKEN: PASTE YOUR TOKEN HERE</h6>
-                                    <textarea class="form-control" name="token" id="jwt-token" rows="6" placeholder="Paste your JWT token here" required><%= token || '' %></textarea>
-                                  </div>
-                                  <div class="mb-3">
-                                    <h6 class="mt-3">ALGORITHM: CHOOSE YOUR ALGORITHM</h6>
-                                    <select class="form-control" name="algorithm" id="algorithm" required>
-                                      <option value="HS256" <%= algorithm === 'HS256' ? 'selected' : '' %>>HS256</option>
-                                      <option value="RS256" <%= algorithm === 'RS256' ? 'selected' : '' %>>RS256</option>
-                                      <option value="ES256" <%= algorithm === 'ES256' ? 'selected' : '' %>>ES256</option>
-                                    </select>
-                                  </div>
-                                  <button type="submit" class="btn btn-primary">Decode JWT</button>
-                                </form>
-                              </div>
-                          
-                              <!-- Decoded JWT Output Section (Header, Payload, Signature) -->
-                              <div class="col-md-6">
-                                <h6 class="mt-3">HEADER: ALGORITHM & TOKEN TYPE</h6>
-                                <textarea class="form-control" rows="6" readonly>
-                                  <%= header || 'Header content will appear here.' %>
-                                </textarea>
-                          
-                                <h6 class="mt-3">PAYLOAD: DATA</h6>
-                                <textarea class="form-control" rows="6" readonly>
-                                  <%= payload || 'Payload content will appear here.' %>
-                                </textarea>
-                          
-                                <h6 class="mt-3">SIGNATURE</h6>
-                                <textarea class="form-control" rows="6" readonly>
-                                  <%= signature || 'Signature content will appear here.' %>
-                                </textarea>
-                          
-                                <% if (error_msg) { %>
-                                  <div class="alert alert-danger mt-3">
-                                    <%= error_msg %>
-                                  </div>
-                                <% } %>
-                              </div>
+                                <!-- JWT Token Input Section -->
+                                <div class="col-md-6 col-12 mb-3">
+                                    <form action="/decode-jwt" method="POST">
+                                        <div class="mb-3">
+                                            <h6 class="mt-3">JWT TOKEN: PASTE YOUR TOKEN HERE</h6>
+                                            <textarea class="form-control" name="token" id="jwt-token" rows="6"
+                                                placeholder="Paste your JWT token here"
+                                                required><%= token || '' %></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <h6 class="mt-3">ALGORITHM: CHOOSE YOUR ALGORITHM</h6>
+                                            <select class="form-control" name="algorithm" id="algorithm" required>
+                                                <option value="HS256" <%=algorithm==='HS256' ? 'selected' : '' %>>HS256
+                                                </option>
+                                                <option value="RS256" <%=algorithm==='RS256' ? 'selected' : '' %>>RS256
+                                                </option>
+                                                <option value="ES256" <%=algorithm==='ES256' ? 'selected' : '' %>>ES256
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">Decode JWT</button>
+                                    </form>
+                                </div>
+
+                                <!-- Decoded JWT Output Section (Header, Payload, Signature) -->
+                                <div class="col-md-6 col-12">
+                                    <h6 class="mt-3">HEADER: ALGORITHM & TOKEN TYPE</h6>
+                                    <textarea class="form-control" rows="6" readonly>
+                    <%= header || 'Header content will appear here.' %>
+                </textarea>
+
+                                    <h6 class="mt-3">PAYLOAD: DATA</h6>
+                                    <textarea class="form-control" rows="6" readonly>
+                    <%= payload || 'Payload content will appear here.' %>
+                </textarea>
+
+                                    <h6 class="mt-3">SIGNATURE</h6>
+                                    <textarea class="form-control" rows="6" readonly>
+                    <%= signature || 'Signature content will appear here.' %>
+                </textarea>
+
+                                    <% if (error_msg) { %>
+                                        <div class="alert alert-danger mt-3">
+                                            <%= error_msg %>
+                                        </div>
+                                        <% } %>
+                                </div>
                             </div>
-                          </div>                        
+                        </div>
                     </div>
 
-                    <!-- Basic Token Decode -->
-                    <div class="tab-pane fade <%= activeTab === 'basic-decode' ? 'show active' : '' %>"
-                        id="basic-decode">
-                        <h3>Basic Token Decode</h3>
-                        <form action="/decode-basic" method="post">
-                            <div class="mb-3">
-                                <label for="basic-token" class="form-label">BASIC TOKEN: PASTE YOUR BASIC TOKEN HERE!!!</label>
-                                <input type="text" class="form-control" name="token" id="basic-token">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Decode</button>
-                            <% if (basicTokenResult) { %>
-                                <div class="mt-3">
-                                <!-- Show Success or Error message -->
-                                <div class="alert alert-<%= decodeStatus %>">
-                                    <h6><%= decodeStatus === 'success' ? 'Decode Successfully!' : 'Decode Failure!' %></h6>
-                                </div>
+<!-- Basic Token Decode -->
+<div class="tab-pane fade <%= activeTab === 'basic-decode' ? 'show active' : '' %>" id="basic-decode">
+    <h3 class="text-center mt-4">Basic Token Decode</h3>
+    
+    <form action="/decode-basic" method="post">
+        <div class="mb-3">
+            <label for="basic-token" class="form-label">BASIC TOKEN: PASTE YOUR BASIC TOKEN HERE!!!</label>
+            <input type="text" class="form-control" name="token" id="basic-token" required>
+        </div>
 
-                                <!-- Beautified JSON -->
-                                <% if (decodeStatus === 'success') { %>
-                                    <textarea class="form-control" rows="6" readonly><%= basicTokenResult || 'Result will appear here.' %></textarea>
-                                <% }%>
-                                </div>
-                            <% } %>                               
-                        </form>
-                    </div>
+        <button type="submit" class="btn btn-primary w-100">Decode</button>
 
-                    <!-- JSON Validate -->
-                    <div class="tab-pane fade <%= activeTab === 'json-validate' ? 'show active' : '' %>" id="json-validate">
-                        <h3>JSON Validate</h3>
-                        <form action="/validate-json" method="post">
-                            <div class="mb-3">
-                                <label for="json-input" class="form-label">JSON INPUT</label>
-                                <textarea class="form-control" name="json" id="json-input" rows="3"></textarea>
-                            </div>                                                   
-                            <button type="submit" class="btn btn-primary">Validate</button>
-                            <!-- Validation Result -->
-                            <% if (validateJsonResult) { %>
-                                <div class="mt-3">
-                                <!-- Show Success or Error message -->
-                                <div class="alert alert-<%= validationStatus %>">
-                                    <h6><%= validationStatus === 'success' ? 'Valid JSON!' : 'Invalid JSON!' %></h6>
-                                </div>
+        <% if (basicTokenResult) { %>
+        <div class="mt-3">
+            <!-- Show Success or Error message -->
+            <div class="alert alert-<%= decodeStatus %>">
+                <h6>
+                    <%= decodeStatus === 'success' ? 'Decode Successfully!' : 'Decode Failure!' %>
+                </h6>
+            </div>
 
-                                <!-- Beautified JSON -->
-                                <% if (validationStatus === 'success') { %>
-                                    <textarea class="form-control" rows="6" readonly><%= validateJsonResult || 'Result will appear here.' %></textarea>
-                                <% }%>
-                                </div>
-                            <% } %>                            
-                        </form>
-                    </div>
+            <!-- Beautified JSON -->
+            <% if (decodeStatus === 'success') { %>
+                <textarea class="form-control" rows="6" readonly><%= basicTokenResult || 'Result will appear here.' %></textarea>
+            <% } %>
+        </div>
+        <% } %>
+    </form>
+</div>
+
+<!-- JSON Validate -->
+<div class="tab-pane fade <%= activeTab === 'json-validate' ? 'show active' : '' %>" id="json-validate">
+    <h3 class="text-center mt-4">JSON Validate</h3>
+
+    <form action="/validate-json" method="post">
+        <div class="mb-3">
+            <label for="json-input" class="form-label">JSON INPUT</label>
+            <textarea class="form-control" name="json" id="json-input" rows="6" placeholder="Paste your JSON here" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Validate</button>
+
+        <% if (validateJsonResult) { %>
+        <div class="mt-3">
+            <!-- Show Success or Error message -->
+            <div class="alert alert-<%= validationStatus %>">
+                <h6>
+                    <%= validationStatus === 'success' ? 'Valid JSON!' : 'Invalid JSON!' %>
+                </h6>
+            </div>
+
+            <!-- Beautified JSON -->
+            <% if (validationStatus === 'success') { %>
+                <textarea class="form-control" rows="6" readonly><%= validateJsonResult || 'Result will appear here.' %></textarea>
+            <% } %>
+        </div>
+        <% } %>
+    </form>
+</div>
                 </div>
             </div>
         </div>
@@ -202,5 +271,71 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
+<script>
+    function loadApiDetails(method, endpoint, examplePayload) {
+        // Populate form fields
+        const baseUrl = "http://localhost:4455"; // Change this to your actual API base URL
+        const fullUrl = `${baseUrl}${endpoint}`;
+        if (!isValidUrl(fullUrl)) {
+            alert("Invalid API URL.");
+            return;
+        }
+        document.getElementById("method").value = method;
+        document.getElementById("endpoint").value = endpoint;
+        document.getElementById("url").value = `${baseUrl}${endpoint}`;
+        document.getElementById("request-method").value = method;
+
+        // Show example payload if applicable
+        const payloadContainer = document.getElementById("payload-container");
+        if (method === "POST" || method === "PUT") {
+            payloadContainer.style.display = "block";
+            document.getElementById("payload").value = JSON.stringify(examplePayload, null, 2);
+        } else {
+            payloadContainer.style.display = "none";
+            document.getElementById("payload").value = "";
+        }
+        document.getElementById('send-request').addEventListener('click', async () => {
+            const url = '/api/users';
+            const requestBody = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                age: document.getElementById('age').value,
+            };
+
+            const responseSection = document.getElementById('api-response');
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody),
+                });
+
+                if (!response.ok) {
+                    // Parse error message from backend
+                    const errorData = await response.json();
+                    responseSection.innerText = `Error: ${errorData.message}`;
+                } else {
+                    const data = await response.json();
+                    responseSection.innerText = JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                // Handle network errors
+                responseSection.innerText = `Error: ${error.message}`;
+            }
+        });
+        // Clear response container
+        document.getElementById("response-container").innerHTML = "<p>No response yet.</p>";
+    }
+    function isValidUrl(url) {
+        try {
+            new URL(url);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }    
+</script>
 
 </html>
