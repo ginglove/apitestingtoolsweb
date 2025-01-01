@@ -5,13 +5,102 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Information - API Testing Website</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Arial', sans-serif;
+    }
+    h1 {
+    color: #007bff !important;
+    font-size: 2rem !important;
+    margin-bottom: 1rem !important;  
+    }
+    p.lead {
+      font-size: 1.5rem;
+      color: #555;
+    }
+    p {
+      font-size: 1.2rem;
+      color: #555;
+    }  
+    ul {
+      padding-left: 1rem;
+    }
+    ul li {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: #333;
+      transition: color 0.3s ease;
+    }
+    ul li:hover {
+      color: #007bff;
+    }
+    .card {
+      border: none;
+      border-radius: 15px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-top: 20px;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.75rem 1.5rem;
+      text-transform: uppercase;
+      font-weight: bold;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+      transform: translateY(-3px);
+      }
+      .navbar-brand {
+      display: flex;
+      align-items: center;
+      }
+
+      .navbar-brand img {
+          background-color: #fff; /* Optional: Adds contrast for logos with dark backgrounds */
+          padding: 5px; /* Adds some spacing around the logo */
+          border-radius: 5px; /* Optional: Smoothens the edges */
+      }
+
+      .navbar-brand span {
+          font-size: 1.25rem;
+          font-weight: bold;
+          margin-left: 0.5rem;
+          color: #fff;
+      }      
+      footer {
+      background-color: #333;
+      color: #fff;
+      padding: 15px 0;
+      font-size: 0.9rem;
+      }
+      footer p{
+        font-size: 1.2rem;
+        color: #fff;
+      }
+      footer a {
+      color: #007bff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      }
+      footer a:hover {
+      color: #0056b3;
+      }      
+  </style>
 </head>
 <body>
   <!-- Navigation Bar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">API Testing</a>
+      <a class="navbar-brand" href="#">
+        <img class="icon" src="/img/Logo_1.png" alt="ITLearn logo" class="img-fluid" style="max-height: 50px;">
+        <span class="ms-2 text-white">ITLearn - API Testing Tools</span>
+    </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -33,17 +122,15 @@
     <h1 class="text-center">Information Page</h1>
     <p class="lead text-center">Welcome to the Information page! Here you can find details about the application and its purpose.</p>
 
-    <div class="row mt-4">
-      <div class="col-md-12">
-        <p>This website is built to provide modern tools for API testing and token decoding:</p>
-        <ul>
-          <li>API Testing Demo</li>
-          <li>JWT Token Decoding with algorithm selection</li>
-          <li>Basic Token Decoding</li>
-          <li>JSON Validation</li>
-        </ul>
-        <p>Feel free to explore the features from the main page and contact us for any inquiries.</p>
-      </div>
+    <div class="card">
+      <p>This website is built by ITLearn to provide modern tools for API testing, Json Validation, Json Parser, Token Validation with JWT and Basic Tokens:</p>
+      <ul>
+        <li>API Dummy Request</li>
+        <li>JWT Token Decoding with algorithm selection</li>
+        <li>Basic Token Decoding</li>
+        <li>JSON Validation and JsonPath Finder</li>
+      </ul>
+      <p>Feel free to explore the features from the main page and contact us for any inquiries.</p>
     </div>
 
     <!-- Back to Main Menu Button -->
@@ -54,9 +141,10 @@
 
   <!-- Footer -->
   <footer class="text-center mt-5">
-    <p>&copy; 2024 API Testing Website | <a href="/information">Information</a> | <a href="/contacts">Contacts</a></p>
-  </footer>
+        <p>&copy; 2025 ITLearn | <a href="/information">Information</a> | <a href="/contacts">Contacts</a></p>     
+    </div>
 
+  </footer>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

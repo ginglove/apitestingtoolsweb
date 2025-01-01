@@ -5,15 +5,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API Testing Modern</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">   
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css?v=2">
 </head>
+<style>
+    h1 {
+    color: #007bff !important;
+    font-size: 2rem !important;
+    margin-bottom: 1rem !important;  
+    }
+    small {
+    font-size: 10px;
+    }
+    /*Nav bar*/     
+    .navbar-brand {
+    display: flex;
+    align-items: center;
+    }
+    footer p{
+        font-size: 1.2rem;
+        color: #fff;
+    }
+    .navbar-brand img {
+    background-color: #fff; /* Optional: Adds contrast for logos with dark backgrounds */
+    padding: 5px; /* Adds some spacing around the logo */
+    border-radius: 5px; /* Optional: Smoothens the edges */
+    }
 
+    .navbar-brand span {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-left: 0.5rem;
+    color: #fff;
+    }            
+    footer {
+    background-color: #333;
+    color: #fff;
+    padding: 15px 0;
+    font-size: 0.9rem;
+    }
+    footer a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    }
+    footer a:hover {
+    color: #0056b3;
+    }      
+  </style>
 <body>
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">API Testing</a>
+            <div class="brand-infor">
+                <a class="navbar-brand" href="#">
+                    <img class="icon" src="/img/Logo_1.png" alt="ITLearn logo" class="img-fluid" style="max-height: 50px;">
+                    <span class="ms-2 text-white">ITLearn - API Testing Tools</span>
+                </a>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -33,7 +83,7 @@
 
     <!-- Main Content -->
     <div class="container my-5">
-        <h1 class="text-center mb-4">API Testing Modern</h1>
+        <!-- <h1 class="text-center mb-4">API Testing Modern</h1> -->
 
         <div class="row">
             <!-- Left Column (Tabs) -->
@@ -41,7 +91,7 @@
                 <ul class="nav nav-tabs flex-column">
                     <li class="nav-item">
                         <a class="nav-link <%= activeTab === 'api-test' ? 'active' : '' %>" href="#api-test"
-                            data-bs-toggle="tab">API Testing Demo</a>
+                            data-bs-toggle="tab">API Dummy Request</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <%= activeTab === 'jwt-decode' ? 'active' : '' %>" href="#jwt-decode"
@@ -53,7 +103,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <%= activeTab === 'json-validate' ? 'active' : '' %>" href="#json-validate"
-                            data-bs-toggle="tab">JSON Validate</a>
+                            data-bs-toggle="tab">JSON Validate and JsonPath Finder</a>
                     </li>
                 </ul>
             </div>
@@ -62,11 +112,11 @@
                 <div class="tab-content">
                     <!-- API Testing Demo Tab -->
                     <div class="tab-pane fade <%= activeTab === 'api-test' ? 'show active' : '' %>" id="api-test">
-                        <h2>API Testing Demo</h2>
+                        <h1 class="text-center mt-4">API Dummy Request</h1>
                         <div class="row">
                             <!-- API List Column -->
                             <div class="col-md-4 border-end">
-                                <h4>API List</h4>
+                                <h5>API List</h5>
                                 <ul class="list-group" id="api-list">
                                     <li class="list-group-item">
                                         <button class="btn btn-link w-100 text-start"
@@ -102,7 +152,7 @@
                             </div>
                             <!-- Request Example Column -->
                             <div class="col-md-4 border-end">
-                                <h4>Request Example</h4>
+                                <h5>Request Example</h5>
                                 <form id="api-form" method="POST" action="/api-test">
                                     <input type="hidden" name="method" id="method">
                                     <input type="hidden" name="endpoint" id="endpoint">
@@ -127,7 +177,7 @@
                             </div>
                             <!-- Response Column -->
                             <div class="col-md-4">
-                                <h4>Response</h4>
+                                <h5>Response</h5>
                                 <div id="response-container" class="bg-light p-3 border rounded"
                                     style="min-height: 200px;">
                                     <% if (apiTestResult) { %>
@@ -140,134 +190,158 @@
                         </div>
                     </div>
 
-                    <!-- JWT Decode -->
                     <div class="tab-pane fade <%= activeTab === 'jwt-decode' ? 'show active' : '' %>" id="jwt-decode">
                         <div class="container">
                             <!-- Title Section -->
-                            <h2 class="mt-4 text-center">JWT Decode</h2>
-
-                            <!-- Decode JWT Section (Header, Payload, Signature) in the same row -->
-                            <div class="row mt-4">
+                            <h1 class="text-center mt-4">JWT Decode</h1>
+                    
+                            <!-- Decode JWT Section -->
+                            <div class="row align-items-start mt-4">
                                 <!-- JWT Token Input Section -->
-                                <div class="col-md-6 col-12 mb-3">
+                                <div class="col-md-6 mb-3">
                                     <form action="/decode-jwt" method="POST">
                                         <div class="mb-3">
-                                            <h6 class="mt-3">JWT TOKEN: PASTE YOUR TOKEN HERE</h6>
-                                            <textarea class="form-control" name="token" id="jwt-token" rows="6"
-                                                placeholder="Paste your JWT token here"
-                                                required><%= token || '' %></textarea>
+                                            <h5 class="mt-3">JWT TOKEN:
+                                                <small>PASTE YOUR TOKEN HERE</small>
+                                            </h5>
+                                            <textarea class="form-control"  name="token" id="jwt-token" rows="6" placeholder="Paste your JWT token here" aria-label="JWT Token Input" required><%= token || '' %></textarea>
                                         </div>
                                         <div class="mb-3">
-                                            <h6 class="mt-3">ALGORITHM: CHOOSE YOUR ALGORITHM</h6>
-                                            <select class="form-control" name="algorithm" id="algorithm" required>
-                                                <option value="HS256" <%=algorithm==='HS256' ? 'selected' : '' %>>HS256
-                                                </option>
-                                                <option value="RS256" <%=algorithm==='RS256' ? 'selected' : '' %>>RS256
-                                                </option>
-                                                <option value="ES256" <%=algorithm==='ES256' ? 'selected' : '' %>>ES256
-                                                </option>
+                                            <h5 class="mt-3">ALGORITHM:
+                                                <small>CHOOSE YOUR ALGORITHM</small>
+                                            </h5>
+                                            <select class="form-control" name="algorithm" id="algorithm" aria-label="Algorithm Selection" required>
+                                                <option value="HS256" <%=algorithm==='HS256' ? 'selected' : '' %>>HS256</option>
+                                                <option value="RS256" <%=algorithm==='RS256' ? 'selected' : '' %>>RS256</option>
+                                                <option value="ES256" <%=algorithm==='ES256' ? 'selected' : '' %>>ES256</option>
                                             </select>
                                         </div>
                                         <button type="submit" class="btn btn-primary w-100">Decode JWT</button>
                                     </form>
                                 </div>
-
-                                <!-- Decoded JWT Output Section (Header, Payload, Signature) -->
-                                <div class="col-md-6 col-12">
-                                    <h6 class="mt-3">HEADER: ALGORITHM & TOKEN TYPE</h6>
-                                    <textarea class="form-control" rows="6" readonly>
-                    <%= header || 'Header content will appear here.' %>
-                </textarea>
-
-                                    <h6 class="mt-3">PAYLOAD: DATA</h6>
-                                    <textarea class="form-control" rows="6" readonly>
-                    <%= payload || 'Payload content will appear here.' %>
-                </textarea>
-
-                                    <h6 class="mt-3">SIGNATURE</h6>
-                                    <textarea class="form-control" rows="6" readonly>
-                    <%= signature || 'Signature content will appear here.' %>
-                </textarea>
-
-                                    <% if (error_msg) { %>
+                    
+                                <!-- Decoded JWT Output Section -->
+                                <div class="col-md-6 mb-3">
+                                    <form>
+                                        <div class="mb-3">
+                                            <h5 class="mt-3">HEADER:
+                                                <small>ALGORITHM & TOKEN TYPE</small>
+                                            </h5>
+                                            <textarea class="form-control" rows="6" aria-label="Header Output" readonly><%= header || 'Header content will appear here.' %></textarea>
+                                        </div>                        
+                                        <h5 class="mt-3">PAYLOAD:
+                                            <small>DATA</small>
+                                        </h5>
+                                        <textarea 
+                                            class="form-control" 
+                                            rows="6" 
+                                            aria-label="Payload Output" 
+                                            readonly><%= payload || 'Payload content will appear here.' %></textarea>
+                        
+                                        <h5 class="mt-3">SIGNATURE</h5>
+                                        <textarea 
+                                            class="form-control" 
+                                            rows="6" 
+                                            aria-label="Signature Output" 
+                                            readonly><%= signature || 'Signature content will appear here.' %></textarea>
+                        
+                                        <% if (error_msg) { %>
                                         <div class="alert alert-danger mt-3">
                                             <%= error_msg %>
                                         </div>
                                         <% } %>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-<!-- Basic Token Decode -->
-<div class="tab-pane fade <%= activeTab === 'basic-decode' ? 'show active' : '' %>" id="basic-decode">
-    <h3 class="text-center mt-4">Basic Token Decode</h3>
-    
-    <form action="/decode-basic" method="post">
-        <div class="mb-3">
-            <label for="basic-token" class="form-label">BASIC TOKEN: PASTE YOUR BASIC TOKEN HERE!!!</label>
-            <input type="text" class="form-control" name="token" id="basic-token" required>
-        </div>
+                    <!-- Basic Token Decode -->
+                    <div class="tab-pane fade <%= activeTab === 'basic-decode' ? 'show active' : '' %>"
+                        id="basic-decode">
+                        <h1 class="text-center mt-4">Basic Token Decode</h5>
 
-        <button type="submit" class="btn btn-primary w-100">Decode</button>
+                        <form action="/decode-basic" method="post">
+                            <div class="mb-3">
+                                <label for="basic-token" class="form-label">BASIC TOKEN: PASTE YOUR BASIC TOKEN
+                                    HERE!!!</label>
+                                <input type="text" class="form-control" name="token" id="basic-token" required>
+                            </div>
 
-        <% if (basicTokenResult) { %>
-        <div class="mt-3">
-            <!-- Show Success or Error message -->
-            <div class="alert alert-<%= decodeStatus %>">
-                <h6>
-                    <%= decodeStatus === 'success' ? 'Decode Successfully!' : 'Decode Failure!' %>
-                </h6>
-            </div>
+                            <button type="submit" class="btn btn-primary w-100">Decode</button>
 
-            <!-- Beautified JSON -->
-            <% if (decodeStatus === 'success') { %>
-                <textarea class="form-control" rows="6" readonly><%= basicTokenResult || 'Result will appear here.' %></textarea>
-            <% } %>
-        </div>
-        <% } %>
-    </form>
-</div>
+                            <% if (basicTokenResult) { %>
+                                <div class="mt-3">
+                                    <!-- Show Success or Error message -->
+                                    <div class="alert alert-<%= decodeStatus %>">
+                                        <h5>
+                                            <%= decodeStatus==='success' ? 'Decode Successfully!' : 'Decode Failure!' %>
+                                        </h5>
+                                    </div>
 
-<!-- JSON Validate -->
-<div class="tab-pane fade <%= activeTab === 'json-validate' ? 'show active' : '' %>" id="json-validate">
-    <h3 class="text-center mt-4">JSON Validate</h3>
+                                    <!-- Beautified JSON -->
+                                    <% if (decodeStatus==='success' ) { %>
+                                        <textarea class="form-control" rows="6"
+                                            readonly><%= basicTokenResult || 'Result will appear here.' %></textarea>
+                                        <% } %>
+                                </div>
+                                <% } %>
+                        </form>
+                    </div>
 
-    <form action="/validate-json" method="post">
-        <div class="mb-3">
-            <label for="json-input" class="form-label">JSON INPUT</label>
-            <textarea class="form-control" name="json" id="json-input" rows="6" placeholder="Paste your JSON here" required></textarea>
-        </div>
+                    <!-- JSON Validate -->
+                    <div class="tab-pane fade <%= activeTab === 'json-validate' ? 'show active' : '' %>"
+                        id="json-validate">
+                        <h1 class="text-center mt-4">JSON Validate and JsonPath Finder</h5>
 
-        <button type="submit" class="btn btn-primary w-100">Validate</button>
+                        <form action="/validate-json" method="post">
+                            <div class="mb-3">
+                                <label for="json-input" class="form-label">JSON INPUT</label>
+                                <textarea class="form-control" name="json" id="json-input" rows="6"
+                                    placeholder="Paste your JSON here" required></textarea>
+                            </div>
+                            <!-- JSONPath Expression -->
+                            <div class="mb-3">
+                                <label for="json-path" class="form-label">JSONPath Expression (Optional)</label>
+                                <input type="text" class="form-control" name="jsonPath" id="json-path" placeholder="Enter JSONPath expression, e.g., $.store.book[*].author" value="<%= jsonPath || '' %>">
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Validate</button>
 
-        <% if (validateJsonResult) { %>
-        <div class="mt-3">
-            <!-- Show Success or Error message -->
-            <div class="alert alert-<%= validationStatus %>">
-                <h6>
-                    <%= validationStatus === 'success' ? 'Valid JSON!' : 'Invalid JSON!' %>
-                </h6>
-            </div>
+                            <!-- Validation and JSONPath Results -->
+                            <% if (validationResult) { %>
+                                <div class="mt-3">
+                                    <!-- JSON Validation Status -->
+                                    <div class="alert alert-<%= validationStatus %>">
+                                        <h5>
+                                            <%= validationStatus === 'success' ? 'Valid JSON!' : 'Invalid JSON!' %>
+                                        </h5>
+                                    </div>
 
-            <!-- Beautified JSON -->
-            <% if (validationStatus === 'success') { %>
-                <textarea class="form-control" rows="6" readonly><%= validateJsonResult || 'Result will appear here.' %></textarea>
-            <% } %>
-        </div>
-        <% } %>
-    </form>
-</div>
+                                    <!-- Beautified JSON (if valid) -->
+                                    <% if (validationStatus === 'success') { %>
+                                        <label for="validated-json" class="form-label">Formatted JSON</label>
+                                        <textarea id="validated-json" class="form-control" rows="6" readonly><%= validateJsonResult || '' %></textarea>
+
+                                        <!-- JSONPath Query Results -->
+                                        <% if (jsonPathResult) { %>
+                                            <label for="json-path-result" class="form-label">JSONPath Query Result</label>
+                                            <textarea id="json-path-result" class="form-control" rows="4" readonly><%= jsonPathResult || 'No result found.' %></textarea>
+                                        <% } %>
+                                    <% } %>
+                                </div>
+                            <% } %>
+                        </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="text-center mt-5">
-        <p>&copy; 2024 API Testing Website | <a href="/information">Information</a> | <a href="/contacts">Contacts</a>
-        </p>
-    </footer>
+  <!-- Footer -->
+  <footer class="text-center mt-5">
+    <p>&copy; 2025 ITLearn | <a href="/information">Information</a> | <a href="/contacts">Contacts</a></p>
+  </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
@@ -275,7 +349,7 @@
 <script>
     function loadApiDetails(method, endpoint, examplePayload) {
         // Populate form fields
-        const baseUrl = "http://localhost:4455"; // Change this to your actual API base URL
+        const baseUrl = "http://localhost:5566"; // Change this to your actual API base URL
         const fullUrl = `${baseUrl}${endpoint}`;
         if (!isValidUrl(fullUrl)) {
             alert("Invalid API URL.");

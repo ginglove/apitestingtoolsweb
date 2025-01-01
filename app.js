@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const mongoose = require('mongoose');
-
+const jp = require('jsonpath')
 const app = express();
 const flash = require('connect-flash');
 const session = require('express-session');
@@ -64,6 +64,10 @@ app.get('/', (req, res) => {
     algorithm: 'HS256', // Retain algorithm
     activeTab: 'api-test',  // Default active tab,
     validateJsonResult: '',
+    validationResult:'',
+    validationStatus:'',
+    jsonPathResult:'',     
+    jsonPath:'',  
     apiTestResult:'',
     basicTokenResult: '',
     errorMessage:''
@@ -102,6 +106,10 @@ app.post('/api-test', async (req, res) => {
       header: '',
       algorithm: '',
       signature: '',
+      jsonPath:'',
+      validationResult:'',
+      validationStatus:'',
+      jsonPathResult:'',       
       responseStatus: 'danger',
       errorMessage: 'Error: URL is required.'
     });
@@ -132,6 +140,10 @@ app.post('/api-test', async (req, res) => {
       header: '',
       algorithm: '',
       signature: '',
+      jsonPath:'',
+      validationResult:'',
+      validationStatus:'',
+      jsonPathResult:'',         
       responseStatus: 'success',
       errorMessage: ''
     });
@@ -155,7 +167,11 @@ app.post('/api-test', async (req, res) => {
       token: '',
       header: '',
       algorithm: '',
+      jsonPath:'',
       signature: '',
+      validationResult:'',
+      validationStatus:'',
+      jsonPathResult:'',         
       responseStatus: 'danger',
       errorMessage
     });
@@ -234,8 +250,12 @@ app.post('/decode-jwt', (req, res) => {
         algorithm: algorithm || 'HS256', // Retain algorithm
         validateJsonResult:'',
         basicTokenResult:'',
+        jsonPath:'',
         apiTestResult:'',
         errorMessage:'',
+        validationResult:'',
+        validationStatus:'',
+        jsonPathResult:'',           
         activeTab: 'jwt-decode' // Stay on JWT Decode tab
       });
   } catch (error) {
@@ -249,8 +269,12 @@ app.post('/decode-jwt', (req, res) => {
         algorithm: algorithm || 'HS256', // Retain algorithm
         validateJsonResult:'',
         basicTokenResult:'',
+        jsonPath:'',
         apiTestResult:'',
         errorMessage:'',
+        validationResult:'',
+        validationStatus:'',
+        jsonPathResult:'',           
         activeTab: 'jwt-decode' // Stay on JWT Decode tab
       });
   }
@@ -271,9 +295,13 @@ app.post('/decode-basic', (req, res) => {
         payload:'',
         signature:'',
         decodeStatus,
+        jsonPath:'',
         validateJsonResult:'',
         apiTestResult:'',
-        errorMessage:'',        
+        errorMessage:'',   
+        validationResult:'',
+        validationStatus:'',
+        jsonPathResult:'',             
         activeTab: 'basic-decode'
       });
   } catch (error) {
@@ -288,7 +316,11 @@ app.post('/decode-basic', (req, res) => {
       decodeStatus,
       validateJsonResult:'',
       apiTestResult:'',
-      errorMessage:'',      
+      errorMessage:'',  
+      validationResult:'',
+      validationStatus:'',
+      jsonPathResult:'', 
+      jsonPath:'',            
       activeTab: 'basic-decode' 
     });
   }
@@ -296,23 +328,44 @@ app.post('/decode-basic', (req, res) => {
 
 // JSON Validation
 app.post('/validate-json', (req, res) => {
-  const { json } = req.body;
-  let validationStatus = 'danger'; // Default to invalid
+  const { json, jsonPath } = req.body;
+
+  let validationResult = null;
+  let validationStatus = 'danger';
+  let formattedJson = '';
+  let jsonPathResult = null;
+
   try {
-    const parsed = JSON.parse(json);
-    validationStatus = 'success'; // Valid JSON
+        // Validate JSON
+        const parsedJson = JSON.parse(json);
+        validationResult = true;
+        validationStatus = 'success';
+        validateJsonResult = JSON.stringify(parsedJson, null, 4); // Pretty-print JSON
+
+        // Process JSONPath if provided
+        if (jsonPath && jsonPath.trim() !== '') {
+            try {
+                jsonPathResult = jp.query(parsedJson, jsonPath);
+                jsonPathResult = JSON.stringify(jsonPathResult, null, 4); // Format result
+            } catch (err) {
+                jsonPathResult = `Error in JSONPath query: ${err.message}`;
+            }
+        }
     res.render('index', 
       { 
-        validateJsonResult: JSON.stringify(parsed, null, 2),
+        validateJsonResult,
         token:'',
         algorithm:'',
         header:'',
         payload:'',
         signature:'',
-        validationStatus,
+        jsonPath,
         basicTokenResult:'',
         apiTestResult:'',
-        errorMessage:'',        
+        errorMessage:'',
+        validationResult,
+        validationStatus,
+        jsonPathResult,
         activeTab: 'json-validate'
       });
   } catch (error) {
@@ -325,10 +378,13 @@ app.post('/validate-json', (req, res) => {
         header:'',
         payload:'',
         signature:'',
-        validationStatus,
+        jsonPath,
         basicTokenResult:'',
         apiTestResult:'',
-        errorMessage:'',        
+        errorMessage:'',   
+        validationResult,
+        validationStatus,
+        jsonPathResult,             
         activeTab: 'json-validate'
       });
   }
@@ -472,7 +528,7 @@ app.delete('/api/users/:id', async (req, res) => {
 
 
 // Start the server
-const PORT = 4455;
+const PORT = 5566;
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });

@@ -5,13 +5,164 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contacts - API Testing Website</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/styles.css?v=2">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <style>
+    h1 {
+    color: #007bff !important;
+    font-size: 2rem !important;
+    margin-bottom: 1rem !important;  
+    }
+    .contact-card, .social-card {
+      border-radius: 15px;
+      background-color: #ffffff;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .contact-card:hover, .social-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .icon-box {
+      background-color: #f0f0f0;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+    .icon-box i {
+      font-size: 1.5rem;
+      color: #007bff;
+    }
+    .facebook-icon i {
+      color: #4267B2;
+    }
+    .tiktok-icon i {
+      color: #000000;
+    }
+    .website-icon i {
+      color: #28a745;
+    }
+    a.text-decoration-none {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #333;
+      transition: color 0.3s ease;
+    }
+    a.text-decoration-none:hover {
+      color: #007bff;
+    }
+    .contact-card, .social-card {
+  border-radius: 15px;
+  background-color: #ffffff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .contact-card:hover, .social-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  .btn-primary {
+      background-color: #007bff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.75rem 1.5rem;
+      text-transform: uppercase;
+      font-weight: bold;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+      transform: translateY(-3px);
+      }
+      .navbar-brand {
+      display: flex;
+      align-items: center;
+      }  
+  .icon-box {
+    background-color: #f0f0f0;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+  .icon-box i {
+    font-size: 1.5rem;
+    color: #007bff;
+  }
+  .facebook-icon i {
+    color: #4267B2;
+  }
+  .tiktok-icon i {
+    color: #000000;
+  }
+  .website-icon i {
+    color: #28a745;
+  }
+  a.text-decoration-none {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    transition: color 0.3s ease;
+  }
+  a.text-decoration-none:hover {
+    color: #007bff;
+  }
+  footer {
+      background-color: #333;
+      color: #fff;
+      padding: 15px 0;
+      font-size: 0.9rem;
+    }
+    footer p{
+        font-size: 1.2rem;
+        color: #fff;
+    }  
+    footer a {
+      color: #007bff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    footer a:hover {
+      color: #0056b3;
+    }
+    .nav-tabs {
+    border-bottom: 2px solid #ddd;
+    }
+    .nav-item {
+    margin-bottom: 10px;
+    }
+    .navbar-brand {
+    display: flex;
+    align-items: center;
+    }
+
+    .navbar-brand img {
+        background-color: #fff; /* Optional: Adds contrast for logos with dark backgrounds */
+        padding: 5px; /* Adds some spacing around the logo */
+        border-radius: 5px; /* Optional: Smoothens the edges */
+    }
+
+    .navbar-brand span {
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin-left: 0.5rem;
+        color: #fff;
+    }                  
+  </style>
 </head>
 <body>
   <!-- Navigation Bar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">API Testing</a>
+      <div class="brand-infor">
+        <a class="navbar-brand" href="#">
+            <img class="icon" src="/img/Logo_1.png" alt="ITLearn logo" class="img-fluid" style="max-height: 50px;">
+            <span class="ms-2 text-white">ITLearn - API Testing Tools</span>
+        </a>
+      </div>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -28,33 +179,80 @@
     </div>
   </nav>
 
-  <!-- Information Content -->
-  <div class="container my-5">
-    <h1 class="text-center">Contacts Page</h1>
-    <p class="lead text-center">Welcome to the Contacts page! Here you can find details about the application and its purpose.</p>
+  <!-- Contacts Section -->
+  <div class="container mt-5">
+    <h1 class="text-center">Contact Us</h1>
+    <div class="row g-4">
+      <!-- Contact Information -->
+      <div class="col-md-6">
+        <div class="card contact-card p-4 shadow-sm">
+          <h3 class="card-title mb-4 text-center">Get in Touch</h3>
+          <ul class="list-unstyled contact-info">
+            <li class="mb-3 d-flex align-items-center">
+              <div class="icon-box me-3">
+                <i class="fas fa-phone-alt"></i>
+              </div>
+              <span><strong>Phone:</strong> (+84) 0868-101-022</span>
+            </li>
+            <li class="mb-3 d-flex align-items-center">
+              <div class="icon-box me-3">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <span><strong>Email:</strong> lienhe@itlearn.edu.vn</span>
+            </li>
+            <li class="d-flex align-items-center">
+              <div class="icon-box me-3">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <span><strong>Address:</strong> 442 Nguyễn Trãi, Thanh Xuân, Hà Nội</span>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-    <div class="row mt-4">
-      <div class="col-md-12">
-        <p>This website is built to provide modern tools for API testing and token decoding:</p>
-        <ul>
-          <li>API Testing Demo</li>
-          <li>JWT Token Decoding with algorithm selection</li>
-          <li>Basic Token Decoding</li>
-          <li>JSON Validation</li>
-        </ul>
-        <p>Feel free to explore the features from the main page and contact us for any inquiries.</p>
+      <!-- Social Links -->
+      <div class="col-md-6">
+        <div class="card social-card p-4 shadow-sm">
+          <h3 class="card-title mb-4 text-center">Follow Us</h3>
+          <ul class="list-unstyled social-links">
+            <li class="mb-3 d-flex align-items-center">
+              <div class="icon-box me-3 facebook-icon">
+                <i class="fab fa-facebook-f"></i>
+              </div>
+              <a href="https://www.facebook.com/profile.php?id=100086335007461" target="_blank" class="text-decoration-none">
+                ITLearn Facebook
+              </a>
+            </li>
+            <li class="mb-3 d-flex align-items-center">
+              <div class="icon-box me-3 tiktok-icon">
+                <i class="fab fa-tiktok"></i>
+              </div>
+              <a href="https://www.tiktok.com/@tuantestervn?_t=ZS-8shAW4GwTvY&_r=1" target="_blank" class="text-decoration-none">
+                ITLearn TikTok
+              </a>
+            </li>
+            <li class="d-flex align-items-center">
+              <div class="icon-box me-3 website-icon">
+                <i class="fas fa-globe"></i>
+              </div>
+              <a href="https://itlearn.edu.vn/" target="_blank" class="text-decoration-none">
+                ITLearn Website
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
+  </div>
 
-    <!-- Back to Main Menu Button -->
-    <div class="text-center mt-4">
-      <a href="/" class="btn btn-primary">Back to Main Menu</a>
-    </div>
+  <!-- Back to Main Menu Button -->
+  <div class="text-center mt-4">
+    <a href="/" class="btn btn-primary">Back to Main Menu</a>
   </div>
 
   <!-- Footer -->
   <footer class="text-center mt-5">
-    <p>&copy; 2024 API Testing Website | <a href="/information">Information</a> | <a href="/contacts">Contacts</a></p>
+    <p>&copy; 2025 ITLearn | <a href="/information">Information</a> | <a href="/contacts">Contacts</a></p>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
