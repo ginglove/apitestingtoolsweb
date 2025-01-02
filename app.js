@@ -7,6 +7,8 @@ const jp = require('jsonpath')
 const app = express();
 const flash = require('connect-flash');
 const session = require('express-session');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 // Middleware setup
 app.use(session({
@@ -30,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 // MongoDB Connection
-mongoose.connect('mongodb://localhost:27017/ApiTestDB', {
+mongoose.connect('mongodb://localhost:27017/ITLearn', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -49,6 +51,34 @@ const userSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model('User', userSchema);
+
+// Swagger Definition
+const swaggerDefinition = {
+  openapi: '3.0.0',
+  info: {
+    title: 'User Management API',
+    version: '1.0.0',
+    description: 'API documentation for User Management operations.',
+  },
+  externalDocs: {
+    description: 'Back to Website',
+    url: 'http://localhost:5566', // Replace with your website's URL
+  },  
+  servers: [
+    {
+      url: 'http://localhost:5566', // Replace with your base URL
+    },
+  ],
+};
+
+const options = {
+  swaggerDefinition,
+  apis: ['./public/routes/*.js'], // Path to your route files
+};
+
+const swaggerSpec = swaggerJsdoc(options);
+// Serve Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Set EJS as the templating engine
 app.set('view engine', 'ejs');
@@ -70,6 +100,7 @@ app.get('/', (req, res) => {
     jsonPath:'',  
     apiTestResult:'',
     basicTokenResult: '',
+    curlCommand: '',
     errorMessage:''
   });
 });
@@ -111,19 +142,24 @@ app.post('/api-test', async (req, res) => {
       validationStatus:'',
       jsonPathResult:'',       
       responseStatus: 'danger',
+      curlCommand: '',
       errorMessage: 'Error: URL is required.'
     });
   }
 
   try {
-    // Ensure full URL is used, add the base URL (e.g., http://localhost:2233)
-    const requestBody = payload ? JSON.parse(payload) : {};
+
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+    const requestBody = payload ? JSON.parse(payload) : undefined;
     const requestData = {
       method,
       url, // Don't modify the 'url' constant
-      data: payload ? JSON.parse(payload) : undefined,
+      headers,
+      data: requestBody,
     };
-
+    const curlCommand = generateCurlCommand(requestData);
     // Make the API request using axios
     const response = await axios(requestData);
 
@@ -145,6 +181,7 @@ app.post('/api-test', async (req, res) => {
       validationStatus:'',
       jsonPathResult:'',         
       responseStatus: 'success',
+      curlCommand,
       errorMessage: ''
     });
   } catch (error) {
@@ -173,6 +210,7 @@ app.post('/api-test', async (req, res) => {
       validationStatus:'',
       jsonPathResult:'',         
       responseStatus: 'danger',
+      curlCommand:'',
       errorMessage
     });
   }
@@ -255,7 +293,8 @@ app.post('/decode-jwt', (req, res) => {
         errorMessage:'',
         validationResult:'',
         validationStatus:'',
-        jsonPathResult:'',           
+        jsonPathResult:'', 
+        curlCommand: '',          
         activeTab: 'jwt-decode' // Stay on JWT Decode tab
       });
   } catch (error) {
@@ -274,7 +313,8 @@ app.post('/decode-jwt', (req, res) => {
         errorMessage:'',
         validationResult:'',
         validationStatus:'',
-        jsonPathResult:'',           
+        jsonPathResult:'',   
+        curlCommand: '',         
         activeTab: 'jwt-decode' // Stay on JWT Decode tab
       });
   }
@@ -301,7 +341,8 @@ app.post('/decode-basic', (req, res) => {
         errorMessage:'',   
         validationResult:'',
         validationStatus:'',
-        jsonPathResult:'',             
+        jsonPathResult:'',   
+        curlCommand: '',           
         activeTab: 'basic-decode'
       });
   } catch (error) {
@@ -321,6 +362,7 @@ app.post('/decode-basic', (req, res) => {
       validationStatus:'',
       jsonPathResult:'', 
       jsonPath:'',            
+      curlCommand: '', 
       activeTab: 'basic-decode' 
     });
   }
@@ -366,6 +408,7 @@ app.post('/validate-json', (req, res) => {
         validationResult,
         validationStatus,
         jsonPathResult,
+        curlCommand: '', 
         activeTab: 'json-validate'
       });
   } catch (error) {
@@ -384,7 +427,8 @@ app.post('/validate-json', (req, res) => {
         errorMessage:'',   
         validationResult,
         validationStatus,
-        jsonPathResult,             
+        jsonPathResult,    
+        curlCommand: '',          
         activeTab: 'json-validate'
       });
   }
@@ -526,6 +570,22 @@ app.delete('/api/users/:id', async (req, res) => {
   }
 });
 
+function generateCurlCommand({ method, url, headers = {}, data = null }) {
+  let curlCommand = `curl -X ${method.toUpperCase()} "${url}"`;
+
+  // Add headers
+  for (const [key, value] of Object.entries(headers)) {
+    curlCommand += ` -H "${key}: ${value}"`;
+  }
+
+  // Add data
+  if (data) {
+    const dataString = typeof data === 'string' ? data : JSON.stringify(data);
+    curlCommand += ` -d '${dataString}'`;
+  }
+
+  return curlCommand;
+}
 
 // Start the server
 const PORT = 5566;

@@ -59,7 +59,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <div class="brand-infor">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="/">
                     <img class="icon" src="/img/Logo_1.png" alt="ITLearn logo" class="img-fluid" style="max-height: 50px;">
                     <span class="ms-2 text-white">ITLearn - API Testing Tools</span>
                 </a>
@@ -76,6 +76,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/contacts">Contacts</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api-docs">API Docs</a>
+                    </li>                    
                 </ul>
             </div>
         </div>
@@ -169,14 +172,13 @@
                                     <!-- Example JSON Payload -->
                                     <div class="mb-3" id="payload-container" style="display: none;">
                                         <label for="payload" class="form-label">Example JSON Payload</label>
-                                        <textarea id="payload" name="payload" class="form-control" rows="5"
-                                            readonly></textarea>
+                                        <textarea id="payload" name="payload" class="form-control" rows="5"></textarea>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Send Request</button>
                                 </form>
                             </div>
                             <!-- Response Column -->
-                            <div class="col-md-4">
+                            <div class="col-md-4 border-end">
                                 <h5>Response</h5>
                                 <div id="response-container" class="bg-light p-3 border rounded"
                                     style="min-height: 200px;">
@@ -185,6 +187,9 @@
                                         <% } else { %>
                                             <pre><%= errorMessage %></pre>
                                             <% } %>
+                                </div>
+                                <h5>CURL</h5>
+                                <textarea id="payload" name="payload" class="form-control" rows="5" readonly><%= curlCommand || 'No cURL command generated yet.' %></textarea>
                                 </div>
                             </div>
                         </div>
@@ -350,6 +355,7 @@
     function loadApiDetails(method, endpoint, examplePayload) {
         // Populate form fields
         const baseUrl = "http://localhost:5566"; // Change this to your actual API base URL
+        //const baseUrl = "https://api.itlearn.edu.vn"; // Change this to your actual API base URL
         const fullUrl = `${baseUrl}${endpoint}`;
         if (!isValidUrl(fullUrl)) {
             alert("Invalid API URL.");
