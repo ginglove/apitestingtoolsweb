@@ -59,7 +59,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <div class="brand-infor">
-                <a class="navbar-brand" href="/">
+                <a class="navbar-brand" href="#">
                     <img class="icon" src="/img/Logo_1.png" alt="ITLearn logo" class="img-fluid" style="max-height: 50px;">
                     <span class="ms-2 text-white">ITLearn - API Testing Tools</span>
                 </a>
@@ -78,7 +78,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/api-docs">API Docs</a>
-                    </li>                    
+                    </li>                      
                 </ul>
             </div>
         </div>
@@ -129,7 +129,7 @@
                                     </li>
                                     <li class="list-group-item">
                                         <button class="btn btn-link w-100 text-start"
-                                            onclick="loadApiDetails('GET', '/api/users/6775926ef761aa362c223807', null)">
+                                            onclick="loadApiDetails('GET', '/api/users/677161c51c2964487294ec08', null)">
                                             <strong>GET</strong> /api/users/:id
                                         </button>
                                     </li>
@@ -178,7 +178,7 @@
                                 </form>
                             </div>
                             <!-- Response Column -->
-                            <div class="col-md-4 border-end">
+                            <div class="col-md-4">
                                 <h5>Response</h5>
                                 <div id="response-container" class="bg-light p-3 border rounded"
                                     style="min-height: 200px;">
@@ -189,8 +189,7 @@
                                             <% } %>
                                 </div>
                                 <h5>CURL</h5>
-                                <textarea id="payload" name="payload" class="form-control" rows="5" readonly><%= curlCommand || 'No cURL command generated yet.' %></textarea>
-                                </div>
+                                <textarea id="payload" name="payload" class="form-control" rows="5" readonly><%= curlCommand || 'No cURL command generated yet.' %></textarea>                          
                             </div>
                         </div>
                     </div>
