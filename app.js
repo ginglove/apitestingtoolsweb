@@ -62,11 +62,11 @@ const swaggerDefinition = {
   },
   externalDocs: {
     description: 'Back to Website',
-    url: 'http://localhost:5566', // Replace with your website's URL
+    url: 'http://api.itlearn.edu.vn', // Replace with your website's URL
   },  
   servers: [
     {
-      url: 'http://localhost:5566', // Replace with your base URL
+      url: 'http://api.itlearn.edu.vn', // Replace with your base URL
     },
   ],
 };
